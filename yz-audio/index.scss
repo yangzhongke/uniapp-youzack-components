@@ -1,0 +1,136 @@
+@mixin textoverflow() {
+	display: -webkit-box;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 1;
+}
+@keyframes rowup {
+	0% {
+		-webkit-transform: translate(-50%, -50%) rotate(0deg);
+		transform-origin: center center;
+	}
+
+	100% {
+		-webkit-transform: translate(-50%, -50%) rotate(360deg);
+		transform-origin: center center;
+	}
+}
+.imt-audio{
+	background: #ccc;
+	width: 100%;
+	overflow: hidden;
+	display: flex;
+	box-sizing: border-box;
+	position:relative;
+	.top {
+		width: 140rpx;
+		position: relative;
+	}
+
+	.audio-wrapper {
+		display: flex;
+		flex-direction: column; 
+		flex: 1;
+		color: #fff;
+		margin-left: 20rpx;
+
+		.titlebox {
+			display: flex;
+			line-height: 100rpx;
+			margin-bottom: 10rpx;
+			.title {
+				font-size: 30rpx;
+				max-width: 60%;
+				@include textoverflow;
+			}
+
+			.singer {
+				margin-left: 20rpx;
+				font-size: 28rpx;
+				max-width: 50%;
+				@include textoverflow;
+			}
+		}
+	}
+	.slidebox {
+		display: flex;
+		justify-content: space-between;
+		width: 96%;
+	}
+	/deep/ .uni-slider-tap-area {
+		padding: 0;
+	}
+	/deep/ .uni-slider-wrapper {
+		min-height: 0;
+	}
+	/deep/ .uni-slider-handle-wrapper {
+		height: 6px;
+	}
+	.audio-slider {
+		padding-top: 10rpx;
+		margin-left: 150rpx;
+		position: absolute;
+		bottom: 40rpx;		
+		width: 75vw;
+		left: 0;
+		padding: 0;
+	}
+	
+
+	.cover {
+		width: 120rpx;
+		height: 120rpx;
+		box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		animation-fill-mode: forwards;
+		-webkit-animation-fill-mode: forwards;
+	}
+
+	.play {
+		width: 80rpx;
+		height: 80rpx;
+		z-index: 99;
+		background: rgba(0, 0, 0, 0.4);
+		border-radius: 50%;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		&.loading{
+			width: 60rpx;
+			height: 60rpx;
+			animation: rotating_theme3 2s linear infinite;
+		}
+	}
+}
+
+@keyframes rotating {
+	0% {
+		  transform: rotateZ(0deg)
+	}
+	100% {
+		  transform: rotateZ(360deg)
+	}
+}
+@keyframes rotating_theme3 {
+	0% {
+		  transform: translate(-50%, -50%) rotateZ(0deg)
+	}
+	100% {
+		  transform: translate(-50%, -50%) rotateZ(360deg)
+	}
+}
+
+.hItem
+{
+	margin-left: 16rpx;
+}
+
+.extrButton
+{
+	font-size: 36rpx;
+}
