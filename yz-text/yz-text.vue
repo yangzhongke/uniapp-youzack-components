@@ -1,18 +1,18 @@
 <template>
 	<view>
-		<view @longtap="textLongTap">{{text}}</view>
+		<view @longpress="textLongTap">{{text}}</view>
 		<uni-popup ref="popup" type="bottom" :animation="false">
 			<scroll-view scroll-y="true" show-scrollbar="true"
 			style="background-color:#EEEEEE;border-radius: 10px;height: 60vh;padding: 10px;margin-bottom: 10px;width:95vw">
 				<view>
 					<view style="display:flex;flex-direction: row;width: 90vw;">
-						<button type="primary" @click="search">翻译</button>
-						<button @click="copy">复制</button>
+						<button :type="selectedText.length>0?'primary':'default'" @click="search">{{button1Text}}</button>
+						<button :type="selectedText.length>0?'primary':'default'" @click="copy">复制</button>
 						<button @click="selectAll">全选</button>
 						<text @click="close" style="margin-left:auto;font-size:x-large;">X</text>
 					</view>
 					<view style="height: 20rpx;"></view>
-					<view >选择文本(可多选)后，可以点击【翻译】</view>
+					<view >{{tips}}</view>
 					<view style="height: 20rpx;"></view>
 					<view style="display: inline;">
 						<view size="mini" v-for="s in segments" :class="s.selected?'selected buttonLike':'notselected buttonLike'" 
@@ -32,15 +32,29 @@
 				type: String,
 				default: '',
 			},
+			tips:{
+				type:String,
+				default:'选择文本(可多选)后，可以点击【翻译】',
+			},
+			button1Text:
+			{
+				type:String,
+				default:'翻译',
+			}
 		},
 		data() {
 			return {
-				segments:[],
+				segments:[],	
 			};
 		},
-		mounted:function()
+		computed:
 		{
-		},
+			selectedText:function(){
+				let items = this.segments.filter(s=>s.selected).map(s=>s.value);
+				return items.join(" ");
+			}
+		}
+		,
 		methods:{
 			splitWords:function(s)
 			{
@@ -73,16 +87,10 @@
 			,
 			textLongTap:function(){				
 				this.segments = this.splitWords(this.text).map(s=>{return {value:s,selected:false}});
-
 				this.$refs.popup.open();
 			},
 			segmentClick:function(s){
 				s.selected=!s.selected;
-			},
-			getSelectedText:function()
-			{
-				let items = this.segments.filter(s=>s.selected).map(s=>s.value);
-				return items.join(" ");
 			},
 			close:function()
 			{
@@ -90,7 +98,7 @@
 			},
 			search:function()
 			{
-				let text = this.getSelectedText();
+				let text = this.selectedText;
 				if(text.length<=0)
 				{
 					uni.showToast({
@@ -103,7 +111,7 @@
 			},
 			copy:function()
 			{
-				let text = this.getSelectedText();
+				let text = this.selectedText;
 				if(text.length<=0)
 				{
 					uni.showToast({
