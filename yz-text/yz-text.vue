@@ -49,8 +49,12 @@
 		},
 		computed:
 		{
-			selectedText:function(){
+			selectedWords:function(){
 				let items = this.segments.filter(s=>s.selected).map(s=>s.value);
+				return items;
+			},
+			selectedText:function(){
+				let items = this.selectedWords;
 				return items.join(" ");
 			}
 		}
@@ -58,6 +62,13 @@
 		methods:{
 			splitWords:function(s)
 			{
+				var e = {value:s};
+				this.$emit("split",e);
+				//如果split事件中为e.words赋值了，则用e.words为分词后的结果
+				if(e.words)
+				{
+					return e.words;
+				}
 				let words=[],word="";
 				let separators = [' ','\t','\r','\n',',','.','!','?',':','[',']','(',')',';','{','}','&','"'];
 				for(let i=0;i<s.length;i++)
